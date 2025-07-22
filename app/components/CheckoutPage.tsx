@@ -1,87 +1,62 @@
 "use client";
 
-import convertToSubcurrency from "@/lib/convertToSubcurrency";
-import {
-  useStripe,
-  useElements,
-  PaymentElement,
-} from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 
-const CheckoutPage = ({ totalPrice }: { totalPrice: number }) => {
+import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
+import { useCartStore } from "@/store/cartStore";
+
+const CheckoutPage = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const { cart, totalPrice } = useCartStore(); // or get cartItems from state
+  const [message, setMessage] = useState("");
 
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const [clientSecret, setClientSecret] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  useEffect(() => {
-    fetch("/api/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ amount: convertToSubcurrency(totalPrice) }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, [totalPrice]);
+    if (!stripe || !elements) return;
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsLoading(true);
-    if (!stripe || !elements) {
-      return;
-    }
-    const { error: submitError } = await elements.submit();
-    if (submitError) {
-      setErrorMessage(submitError.message);
-      setIsLoading(false);
-      return;
-    }
-    
-    const { error } = await stripe.confirmPayment({
+    const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
-      clientSecret,
       confirmParams: {
-        // return_url: window.location.origin,
-        return_url: `${window.location.origin}/success`,
+        return_url: `${process.env.NEXT_PUBLIC_URL}/success`,
       },
-    })
-    
-    if( error) {
-      setErrorMessage(error.message);
-      setIsLoading(false);
-    }
+      redirect: "if_required", // optional depending on your flow
+    });
 
+    if (error) {
+      setMessage(error.message ?? "Payment failed.");
+    } else {
+      setMessage("✅ Payment succeeded!");
+
+      // ✅ Send email with product info
+      await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          products: cart,
+          totalPrice: totalPrice,
+        }),
+      });
+
+      console.log("✅ Email sent with purchase info");
+    }
   };
 
-
-  if (!stripe || !clientSecret || !elements) {
-    return <span className="loading loading-spinner loading-lg"></span>
-  }
-
-
   return (
-    <>
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md mx-auto bg-white p-6 rounded-lg shadow-md"
-      >
-        {clientSecret && <PaymentElement />}
-
-        {errorMessage && (
-          <div className="text-red-500 mt-4">{errorMessage}</div>
-        )}
+    <div className="p-10 max-w-xl mx-auto">
+      <form onSubmit={handleSubmit}>
+        <PaymentElement />
         <button
-          disabled={!stripe || isLoading}
-          className="bg-black text-white w-full p-5 mt-2 disabled:opacity-50 disabled:animate-pulse hover:cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 rounded-lg shadow-md hover:bg-gray-800"
+          type="submit"
+          disabled={!stripe || !elements}
+          className="mt-4 w-full bg-blue-500 text-white py-2 rounded"
         >
-          {!isLoading ? `Pay $${totalPrice}` : "Processing..."}
+          Pay Now
         </button>
+        {message && <p className="mt-4 text-center text-sm">{message}</p>}
       </form>
-    </>
+    </div>
   );
 };
 

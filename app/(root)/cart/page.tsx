@@ -16,12 +16,12 @@ export default function CartPage() {
         <div key={item._id} className="mb-4 flex justify-between items-center">
           <div>
             <h2>{item.name}</h2>
-            <p>${(item.price / 100).toFixed(2)}</p>
+            <p>${item.price.toFixed(2)}</p>
           </div>
           <button onClick={() => removeFromCart(item._id)}>❌</button>
         </div>
       ))}
-      <div className="mt-4 font-bold">Total: ${(total / 100).toFixed(2)}</div>
+      <div className="mt-4 font-bold">Total: ${total.toFixed(2)}</div>
       <Link href="/checkout">
         <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded">
           Checkout

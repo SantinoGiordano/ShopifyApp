@@ -1,16 +1,21 @@
 import { NextResponse, NextRequest } from "next/server";
 
 import Stripe from "stripe";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2025-06-30.basil" });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2025-06-30.basil",
+});
 
 export async function POST(request: NextRequest) {
   try {
-    const { amount } = await request.json();
+    const { amount, cart } = await request.json();
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount,
+      amount,
       currency: "usd",
       automatic_payment_methods: { enabled: true },
+      metadata: {
+        cart: JSON.stringify(cart), // 👈 add this
+      },
     });
 
     return NextResponse.json({ clientSecret: paymentIntent.client_secret });
@@ -21,5 +26,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-  
 }

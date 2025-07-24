@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       currency: "usd",
       automatic_payment_methods: { enabled: true },
       metadata: {
-        cart: JSON.stringify(cart), // 👈 add this
+        cart: JSON.stringify(cart),
       },
     });
 

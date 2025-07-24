@@ -5,27 +5,33 @@ export async function POST(req: Request) {
   try {
     const { email, cart } = await req.json();
 
-    // Create transporter (using Gmail as example)
+    console.log("API /send-email called with:");
+    console.log("Email:", email);
+    console.log("Cart:", cart);
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER, // your Gmail address
-        pass: process.env.EMAIL_PASS, // app-specific password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
-    // Format cart items
     const cartDetails = cart
       .map((item: any) => `${item.name} - $${item.price}`)
       .join("\n");
 
-    // Send email
-    await transporter.sendMail({
+    const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "santinogiordano13@gmail.com", // YOUR email
+      to: "santinogiordano13@gmail.com",
       subject: `New Checkout from ${email}`,
       text: `Customer Email: ${email}\n\nCart Items:\n${cartDetails}`,
-    });
+    };
+
+    console.log("Prepared email details:", mailOptions);
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully:", info);
 
     return NextResponse.json({ success: true });
   } catch (error) {

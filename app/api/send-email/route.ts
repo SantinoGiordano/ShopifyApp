@@ -1,39 +1,35 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-export async function POST(request: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const { products, totalPrice } = await request.json();
+    const { email, cart } = await req.json();
 
+    // Create transporter (using Gmail as example)
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.EMAIL_USER, // your Gmail address
+        pass: process.env.EMAIL_PASS, // app-specific password
       },
     });
 
-    const htmlProducts = products.map((item: any) => `
-      <li><strong>${item.name}</strong> — $${item.price} (ID: ${item.id})</li>
-    `).join("");
+    // Format cart items
+    const cartDetails = cart
+      .map((item: any) => `${item.name} - $${item.price}`)
+      .join("\n");
 
-    const mailOptions = {
+    // Send email
+    await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: "santinogiordano13@gmail.com",
-      subject: "🛒 New Purchase Made",
-      html: `
-        <h2>🛍️ New Payment Received</h2>
-        <p><strong>Total:</strong> $${totalPrice}</p>
-        <ul>${htmlProducts}</ul>
-      `
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent:", info.messageId);
+      to: "santinogiordano13@gmail.com", // YOUR email
+      subject: `New Checkout from ${email}`,
+      text: `Customer Email: ${email}\n\nCart Items:\n${cartDetails}`,
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("❌ Error sending email:", error);
-    return NextResponse.json({ error: "Email failed to send" }, { status: 500 });
+    console.error("Email error:", error);
+    return NextResponse.json({ success: false, error }, { status: 500 });
   }
 }

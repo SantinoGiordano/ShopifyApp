@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 const CheckoutPage = ({ totalPrice }: { totalPrice: number }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const cart = useCartStore(state => state.cart);
+  const cart = useCartStore((state) => state.cart);
   const [errorMessage, setErrorMessage] = useState<string>();
   const [clientSecret, setClientSecret] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -32,38 +32,36 @@ const CheckoutPage = ({ totalPrice }: { totalPrice: number }) => {
   }, [totalPrice]);
 
   // Handle payment submission
-const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-  setIsLoading(true);
-  console.log("User email entered:", email, "Cart items:", cart);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+    console.log("User email entered:", email, "Cart items:", cart);
 
-  if (!stripe || !elements) return;
+    if (!stripe || !elements) return;
 
-  // Save email to localStorage BEFORE redirect
-  localStorage.setItem("checkoutEmail", email);
+    localStorage.setItem("checkoutEmail", email);
 
-  const { error: submitError } = await elements.submit();
-  if (submitError) {
-    setErrorMessage(submitError.message);
-    setIsLoading(false);
-    return;
-  }
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      setErrorMessage(submitError.message);
+      setIsLoading(false);
+      return;
+    }
 
-  const { error } = await stripe.confirmPayment({
-    elements,
-    clientSecret,
-    confirmParams: {
-      return_url: `${window.location.origin}/success`,
-      receipt_email: email,
-    },
-  });
+    const { error } = await stripe.confirmPayment({
+      elements,
+      clientSecret,
+      confirmParams: {
+        return_url: `${window.location.origin}/success`,
+        receipt_email: email,
+      },
+    });
 
-  if (error) {
-    setErrorMessage(error.message);
-    setIsLoading(false);
-  }
-};
-
+    if (error) {
+      setErrorMessage(error.message);
+      setIsLoading(false);
+    }
+  };
 
   if (!stripe || !clientSecret || !elements) {
     return <span className="loading loading-spinner loading-lg"></span>;

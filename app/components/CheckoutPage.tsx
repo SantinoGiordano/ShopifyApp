@@ -16,9 +16,8 @@ const CheckoutPage = ({ totalPrice }: { totalPrice: number }) => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [clientSecret, setClientSecret] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState(""); // ✅ Email state
+  const [email, setEmail] = useState("");
 
-  // Fetch Payment Intent
   useEffect(() => {
     fetch("/api/create-payment-intent", {
       method: "POST",
@@ -31,11 +30,9 @@ const CheckoutPage = ({ totalPrice }: { totalPrice: number }) => {
       .then((data) => setClientSecret(data.clientSecret));
   }, [totalPrice]);
 
-  // Handle payment submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    console.log("User email entered:", email, "Cart items:", cart);
 
     if (!stripe || !elements) return;
 
@@ -68,40 +65,42 @@ const CheckoutPage = ({ totalPrice }: { totalPrice: number }) => {
   }
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md mx-auto bg-white p-6 rounded-lg shadow-md"
-      >
-        {/* ✅ Email Input */}
-        <label className="block mb-4">
-          <span className="text-gray-700">Email Address</span>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200"
-          />
-        </label>
+    <div className="min-h-screen bg-gray-50 py-10 px-4">
+      <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-6">
+        <h2 className="text-2xl font-bold mb-6 text-gray-900">Checkout</h2>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Email Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email Address
+            </label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-lg border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+            />
+          </div>
 
-        {/* Stripe Payment Element */}
-        {clientSecret && <PaymentElement />}
+          {/* Stripe Payment Element */}
+          {clientSecret && <PaymentElement className="mt-4" />}
 
-        {/* Error */}
-        {errorMessage && (
-          <div className="text-red-500 mt-4">{errorMessage}</div>
-        )}
+          {/* Error */}
+          {errorMessage && (
+            <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
+          )}
 
-        {/* Submit Button */}
-        <button
-          disabled={!stripe || isLoading}
-          className="bg-black text-white w-full p-5 mt-2 disabled:opacity-50 disabled:animate-pulse hover:cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 rounded-lg shadow-md hover:bg-gray-800"
-        >
-          {!isLoading ? `Pay $${totalPrice}` : "Processing..."}
-        </button>
-      </form>
-    </>
+          {/* Submit Button */}
+          <button
+            disabled={!stripe || isLoading}
+            className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-all disabled:opacity-50 shadow-md"
+          >
+            {!isLoading ? `Pay $${totalPrice.toFixed(2)}` : "Processing..."}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 

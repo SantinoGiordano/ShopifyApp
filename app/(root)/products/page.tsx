@@ -41,6 +41,7 @@ type AudioCardProps = {
   description: string;
   price: number;
   link: string;
+  file: string;
 };
 
 const AudioCard = ({ id, title, description, price, link }: AudioCardProps) => {

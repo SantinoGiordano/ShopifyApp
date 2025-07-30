@@ -6,9 +6,8 @@ import { Product } from "@/types/types";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const { toggleCartItem, isInCart } = useCartStore();
 
-  // Fetch products from MongoDB
+  // Fetch products from API
   useEffect(() => {
     fetch("/api/products")
       .then((res) => res.json())
@@ -27,7 +26,7 @@ export default function ProductsPage() {
             title={product.name}
             description={product.description}
             price={product.price}
-            link={product.file}
+            file={product.file} // use file here
           />
         ))}
       </div>
@@ -35,16 +34,16 @@ export default function ProductsPage() {
   );
 }
 
+// Props for AudioCard
 type AudioCardProps = {
   id: string;
   title: string;
   description: string;
   price: number;
-  link: string;
-  file: string;
+  file: string; // changed from link → file
 };
 
-const AudioCard = ({ id, title, description, price, link }: AudioCardProps) => {
+const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -53,7 +52,7 @@ const AudioCard = ({ id, title, description, price, link }: AudioCardProps) => {
 
   const toggleAudio = () => {
     if (!audioRef.current) return;
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isPlaying ? audioRef.current.pause() : audioRef.current.play();
   };
 
@@ -105,7 +104,7 @@ const AudioCard = ({ id, title, description, price, link }: AudioCardProps) => {
       {/* Audio Player */}
       <audio
         ref={audioRef}
-        src={link}
+        src={file} // use file directly
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
@@ -114,7 +113,13 @@ const AudioCard = ({ id, title, description, price, link }: AudioCardProps) => {
       {/* Add/Remove Cart Button */}
       <button
         onClick={() =>
-          toggleCartItem({ _id: id, name: title, price, file: link })
+          toggleCartItem({
+            _id: id,
+            name: title,
+            price,
+            file,
+            description,
+          })
         }
         className={`p-3 mt-4 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg ${
           inCart

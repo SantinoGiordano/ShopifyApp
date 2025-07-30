@@ -2,6 +2,7 @@
 
 import convertToSubcurrency from "@/lib/convertToSubcurrency";
 import { useCartStore } from "@/store/cartStore";
+import { Product } from "@/types/types";
 import {
   useStripe,
   useElements,
@@ -9,9 +10,10 @@ import {
 } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 
-const CheckoutPage = ({ totalPrice }: { totalPrice: number }) => {
+const CheckoutPage = ({ totalPrice }: { totalPrice: number; cart: Product[] }) => {
   const stripe = useStripe();
   const elements = useElements();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const cart = useCartStore((state) => state.cart);
   const [errorMessage, setErrorMessage] = useState<string>();
   const [clientSecret, setClientSecret] = useState("");
@@ -79,7 +81,7 @@ const CheckoutPage = ({ totalPrice }: { totalPrice: number }) => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full shadow-lg rounded-lg border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+              className="w-full shadow-lg rounded-lg border-gray-300 focus:border-black focus:ring-black p-2"
             />
           </div>
 

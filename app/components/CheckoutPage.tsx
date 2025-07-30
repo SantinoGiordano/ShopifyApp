@@ -84,7 +84,7 @@ const CheckoutPage = ({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border-gray-300 p-2 sm:p-3 shadow-sm focus:border-black focus:ring-black"
+              className="w-full rounded-lg border-black p-2 sm:p-3 shadow-sm focus:border-black focus:ring-black"
             />
           </div>
 

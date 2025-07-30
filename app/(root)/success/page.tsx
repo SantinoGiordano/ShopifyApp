@@ -6,7 +6,7 @@ export default function SuccessPage() {
   const cart = useCartStore((state) => state.cart);
   const clearCart = useCartStore((state) => state.clearCart);
 
-  const [email, setEmail] = useState<string | null>(null);
+  const [, setEmail] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
   // Wait until Zustand store is hydrated

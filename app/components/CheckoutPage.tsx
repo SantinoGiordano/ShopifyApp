@@ -65,7 +65,7 @@ const CheckoutPage = ({ totalPrice }: { totalPrice: number }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className=" bg-gray-50 py-10 px-4">
       <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-6">
         <h2 className="text-2xl font-bold mb-6 text-gray-900">Checkout</h2>
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -79,7 +79,7 @@ const CheckoutPage = ({ totalPrice }: { totalPrice: number }) => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
+              className="w-full shadow-lg rounded-lg border-gray-300 shadow-sm focus:border-black focus:ring-black p-2"
             />
           </div>
 

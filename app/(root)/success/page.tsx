@@ -15,7 +15,7 @@ export default function SuccessPage() {
   }, []);
 
   useEffect(() => {
-    if (!hydrated) return; 
+    if (!hydrated) return;
 
     const storedEmail = localStorage.getItem("checkoutEmail");
     setEmail(storedEmail);
@@ -36,10 +36,15 @@ export default function SuccessPage() {
     }
   }, [hydrated, cart, clearCart]);
 
-  return (
-    <div className="text-center mt-20">
-      <h1 className="text-3xl font-bold">Payment Successful!</h1>
-      <p>We&apos;ve sent your details to our team.</p>
-    </div>
-  );
+return (
+  <div className="flex flex-col items-center justify-center h-screen text-center space-y-4 bg-blue-400 md:bg-gradient-to-r md:from-blue-400 md:to-purple-400">
+    <h1 className="text-4xl font-extrabold text-white drop-shadow-lg">
+      Payment Successful!
+    </h1>
+    <p className="text-lg text-white/90">
+      We&apos;ve sent your details to our team.
+    </p>
+  </div>
+);
+
 }

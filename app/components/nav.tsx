@@ -8,9 +8,9 @@ const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white mx-auto mt-4 w-[90%] max-w-4xl px-6 py-3 flex items-center justify-between md:justify-center ">
+    <nav className="bg-white mx-auto p-7 w-[90%] max-w-4xl flex items-center justify-between md:justify-center ">
       {/* Desktop Menu */}
-      <div className="hidden md:flex gap-6 items-center p-4 ">
+      <div className="hidden md:flex gap-6 items-center">
         <Link
           href="/"
           className="text-gray-800  hover:text-blue-600 transition-colors duration-300"

@@ -18,6 +18,7 @@ export async function POST(req: Request) {
     });
 
     const cartDetails = cart
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .map((item: any) => `${item.name} - $${item.price}`)
       .join("\n");
 

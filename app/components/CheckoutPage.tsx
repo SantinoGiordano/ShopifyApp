@@ -18,7 +18,6 @@ const CheckoutPage = ({
 }) => {
   const stripe = useStripe();
   const elements = useElements();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const cart = useCartStore((state) => state.cart);
   const [errorMessage, setErrorMessage] = useState<string>();
   const [clientSecret, setClientSecret] = useState("");
@@ -28,9 +27,7 @@ const CheckoutPage = ({
   useEffect(() => {
     fetch("/api/create-payment-intent", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: convertToSubcurrency(totalPrice) }),
     })
       .then((res) => res.json())
@@ -72,13 +69,14 @@ const CheckoutPage = ({
   }
 
   return (
-    <div className=" bg-gray-50 py-10 px-4">
-      <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-6">
-        <h2 className="text-2xl font-bold mb-6 text-gray-900">Checkout</h2>
+    <div className=" py-6 px-4 sm:px-6 md:px-8 w-full">
+      <div className="max-w-sm sm:max-w-md md:max-w-lg mx-auto bg-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900 text-center">
+          Checkout
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Email Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               Email Address
             </label>
             <input
@@ -86,22 +84,19 @@ const CheckoutPage = ({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full shadow-lg rounded-lg border-gray-300 focus:border-black focus:ring-black p-2"
+              className="w-full rounded-lg border-gray-300 p-2 sm:p-3 shadow-sm focus:border-black focus:ring-black"
             />
           </div>
 
-          {/* Stripe Payment Element */}
           {clientSecret && <PaymentElement className="mt-4" />}
 
-          {/* Error */}
           {errorMessage && (
             <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
           )}
 
-          {/* Submit Button */}
           <button
             disabled={!stripe || isLoading}
-            className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-all disabled:opacity-50 shadow-md"
+            className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-all disabled:opacity-50 shadow-md text-base sm:text-lg"
           >
             {!isLoading ? `Pay $${totalPrice.toFixed(2)}` : "Processing..."}
           </button>

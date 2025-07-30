@@ -1,4 +1,3 @@
-// /app/checkout/page.tsx
 "use client";
 
 import { useEffect } from "react";
@@ -7,7 +6,6 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useCartStore } from "@/store/cartStore";
 import CheckoutPage from "@/app/components/CheckoutPage";
-
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -23,9 +21,9 @@ export default function Checkout() {
   const isValidAmount = totalPrice > 0;
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-8">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-2xl font-bold mb-4 text-center">Checkout</h1>
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-gradient-to-br from-blue-400 to-purple-500">
+      <div className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
+        
         {isValidAmount ? (
           <Elements
             stripe={stripePromise}
@@ -38,7 +36,9 @@ export default function Checkout() {
             <CheckoutPage cart={cart} totalPrice={totalPrice} />
           </Elements>
         ) : (
-          <p className="text-center text-red-500">Add items to cart to checkout</p>
+          <p className="text-center text-red-500">
+            Add items to cart to checkout
+          </p>
         )}
       </div>
     </main>

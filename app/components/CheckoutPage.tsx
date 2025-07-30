@@ -10,7 +10,12 @@ import {
 } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 
-const CheckoutPage = ({ totalPrice }: { totalPrice: number; cart: Product[] }) => {
+const CheckoutPage = ({
+  totalPrice,
+}: {
+  totalPrice: number;
+  cart: Product[];
+}) => {
   const stripe = useStripe();
   const elements = useElements();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

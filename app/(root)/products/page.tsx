@@ -6,41 +6,62 @@ import { Product } from "@/types/types";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch products from API
   useEffect(() => {
+    setLoading(true);
     fetch("/api/products")
       .then((res) => res.json())
-      .then(setProducts)
-      .catch((err) => console.error("Error fetching products:", err));
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching products:", err);
+        setLoading(false);
+      });
   }, []);
 
   return (
-    <div className="min-h-screen bg-blue-400 md:bg-gradient-to-r md:from-blue-400 md:to-purple-400 flex flex-col items-center py-12">
-      <h1 className="text-3xl font-bold mb-10 text-white">Our Products</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-5xl px-4">
-        {products.map((product) => (
-          <AudioCard
-            key={product._id}
-            id={product._id}
-            title={product.name}
-            description={product.description}
-            price={product.price}
-            file={product.file} // use file here
-          />
-        ))}
+    <>
+      <div
+        className=" hidden md:block w-full min-h-[500px] items-center justify-center 
+        bg-[url('/beachSunset.jpg')] bg-cover bg-center bg-no-repeat bg-fixed"
+      ></div>
+      <div className="min-h-screen bg-blue-400 md:bg-gradient-to-r md:from-blue-400 md:to-purple-400 flex flex-col items-center py-12">
+        <h1 className="text-3xl font-bold mb-10 text-white">Our Products</h1>
+
+        {loading ? (
+          <span className="loading loading-spinner loading-xl text-white"></span>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-5xl px-4">
+            {products.length > 0 ? (
+              products.map((product) => (
+                <AudioCard
+                  key={product._id}
+                  id={product._id}
+                  title={product.name}
+                  description={product.description}
+                  price={product.price}
+                  file={product.file}
+                />
+              ))
+            ) : (
+              <p className="text-white text-lg">No products found.</p>
+            )}
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 }
 
-// Props for AudioCard
 type AudioCardProps = {
   id: string;
   title: string;
   description: string;
   price: number;
-  file: string; // changed from link → file
+  file: string;
 };
 
 const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
@@ -52,20 +73,17 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
 
   const toggleAudio = () => {
     if (!audioRef.current) return;
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isPlaying ? audioRef.current.pause() : audioRef.current.play();
   };
 
   return (
     <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center transition-transform duration-300 hover:scale-105 hover:shadow-2xl border-t-4 border-blue-400">
-      {/* Play Button */}
       <div className="w-24 h-24 bg-purple-400 md:bg-gradient-to-r md:from-blue-400 md:to-purple-400 rounded-full flex items-center justify-center mb-4 shadow-md relative">
         <button
           onClick={toggleAudio}
           className="text-white p-2 rounded-full transition-all duration-200 hover:scale-110 absolute"
         >
           {isPlaying ? (
-            // Pause Icon
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -79,7 +97,6 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
               />
             </svg>
           ) : (
-            // Play Icon
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -96,21 +113,18 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
         </button>
       </div>
 
-      {/* Product Info */}
       <h2 className="text-xl font-semibold mb-2 text-blue-700">{title}</h2>
       <p className="text-gray-600 text-center mb-4">{description}</p>
       <p className="text-gray-800 font-medium mb-4">${price.toFixed(2)}</p>
 
-      {/* Audio Player */}
       <audio
         ref={audioRef}
-        src={file} // use file directly
+        src={file}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
       />
 
-      {/* Add/Remove Cart Button */}
       <button
         onClick={() =>
           toggleCartItem({

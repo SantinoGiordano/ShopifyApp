@@ -11,7 +11,7 @@ export default function Home() {
       </div>
 
       <div className="p-15 flex flex-col items-center justify-center text-center bg-blue-400 md:bg-gradient-to-r md:from-blue-400 md:to-purple-400 text-white">
-        {/* Title and intro text */}
+
         <h1 className="text-4xl font-bold mt-2">Meditation & Yoga</h1>
         <div className="w-[200px] h-[200px] rounded-full overflow-hidden mt-6 shadow-lg flex items-center justify-center">
           <Image
@@ -28,7 +28,7 @@ export default function Home() {
           help you find balance, peace, and well-being.
         </p>
 
-        {/* 3 responsive boxes */}
+
         <div className="w-full flex flex-col md:flex-row gap-6 justify-center items-stretch px-4 py-12">
           <div className="flex-1 bg-white rounded-xl p-8 flex flex-col shadow-[0_0_24px_4px_rgba(59,130,246,0.7)] transition-transform duration-300 hover:scale-105">
             <div className="flex items-center gap-2 mb-2">

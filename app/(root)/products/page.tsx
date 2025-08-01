@@ -73,6 +73,7 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
 
   const toggleAudio = () => {
     if (!audioRef.current) return;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isPlaying ? audioRef.current.pause() : audioRef.current.play();
   };
 

@@ -25,7 +25,7 @@ export default function CartPage() {
                 >
                   <div>
                     <h2 className="text-lg font-medium text-gray-800">{item.name}</h2>
-                    <p className="text-gray-600">${item.price.toFixed(2)}</p>
+                    <p className="text-black">${item.price.toFixed(2)}</p>
                   </div>
                   <button
                     onClick={() => removeFromCart(item._id)}

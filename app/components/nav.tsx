@@ -8,13 +8,7 @@ const Nav = () => {
 
   return (
     <>
-      <nav className="bg-gray-800/20 backdrop-blur-md text-white px-4 py-4 md:px-8 md:py-4 flex justify-between items-center fixed top-0 left-0 w-full z-50 shadow-lg">
-        {/* Logo / Branding */}
-        <div className="flex items-center">
-          <span className="ml-2 text-lg md:text-2xl font-bold">My Store</span>
-        </div>
-
-        {/* Hamburger Icon */}
+      <nav className="bg-white text-black px-4 py-4 md:px-8 md:py-4 flex justify-between md:justify-center items-center fixed top-0 left-0 w-full z-50 ">
         <button
           className="md:hidden ml-4 focus:outline-none"
           onClick={() => setMobileOpen((prev) => !prev)}
@@ -30,21 +24,16 @@ const Nav = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d={
-                mobileOpen
-                  ? "M6 18L18 6M6 6l12 12"
-                  : "M4 8h16M4 16h16"
-              }
+              d={mobileOpen ? "M6 18L18 6M6 6l12 12" : "M4 8h16M4 16h16"}
             />
           </svg>
         </button>
 
-        {/* Desktop Nav */}
         <ul className="hidden md:flex space-x-4 md:space-x-8">
           <li>
             <Link
               href="/"
-              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg drop-shadow"
+              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg "
             >
               Home
             </Link>
@@ -52,7 +41,7 @@ const Nav = () => {
           <li>
             <Link
               href="/about"
-              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg drop-shadow"
+              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg "
             >
               About
             </Link>
@@ -60,7 +49,7 @@ const Nav = () => {
           <li>
             <Link
               href="/products"
-              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg drop-shadow"
+              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg "
             >
               Products
             </Link>
@@ -68,7 +57,7 @@ const Nav = () => {
           <li>
             <Link
               href="/cart"
-              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg drop-shadow"
+              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg "
             >
               🛒 Your Cart
             </Link>
@@ -108,21 +97,21 @@ const Nav = () => {
           </Link>
           <Link
             href="/about"
-            className="block py-3 px-6 text-lg font-medium hover:text-gray-400 drop-shadow"
+            className="block py-3 px-6 text-lg font-medium hover:text-gray-400 "
             onClick={() => setMobileOpen(false)}
           >
             About
           </Link>
           <Link
             href="/products"
-            className="block py-3 px-6 text-lg font-medium hover:text-gray-400 drop-shadow"
+            className="block py-3 px-6 text-lg font-medium hover:text-gray-400 "
             onClick={() => setMobileOpen(false)}
           >
             Products
           </Link>
           <Link
             href="/cart"
-            className="block py-3 px-6 text-lg font-medium hover:text-gray-400 drop-shadow"
+            className="block py-3 px-6 text-lg font-medium hover:text-gray-400 "
             onClick={() => setMobileOpen(false)}
           >
             🛒 Your Cart

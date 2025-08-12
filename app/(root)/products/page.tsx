@@ -5,6 +5,7 @@ import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/types";
 
 export default function ProductsPage() {
+  const [langth, setLangth] = useState(0);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 

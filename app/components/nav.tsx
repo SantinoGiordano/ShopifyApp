@@ -23,12 +23,12 @@ const Nav = () => {
         >
           About
         </Link>
-        <Link
+        {/* <Link
           href="/contact"
           className="text-gray-800 hover:text-blue-600 transition-colors duration-300"
         >
           Contact
-        </Link>
+        </Link> */}
         <Link
           href="/products"
           className="text-gray-800 hover:text-blue-600 transition-colors duration-300"
@@ -42,12 +42,12 @@ const Nav = () => {
         >
           🛒 Your Cart
         </Link>
-        <Link
+        {/* <Link
           href="/checkout"
           className="text-gray-800 hover:text-blue-600 transition-colors duration-300"
         >
           Chcekout
-        </Link>
+        </Link> */}
       </div>
 
       <div className="md:hidden ml-auto">
@@ -59,15 +59,13 @@ const Nav = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <>
-          {/* Overlay */}
           <div
             className="fixed inset-0 bg-black/99 z-40"
             onClick={() => setMenuOpen(false)}
           />
-          {/* Top Menu */}
+
           <div className=" text-center fixed top-0 left-0 right-0 z-50 flex justify-center">
             <div className=" p-8 flex flex-col gap-6 w-[80%] max-w-xs mt-6 rounded-xl shadow-lg relative">
               <button
@@ -91,13 +89,13 @@ const Nav = () => {
               >
                 About
               </Link>
-              <Link
+              {/* <Link
                 href="/contact"
                 onClick={() => setMenuOpen(false)}
                 className="text-white hover:text-blue-600 transition-colors duration-300"
               >
                 Contact
-              </Link>
+              </Link> */}
               <Link
                 href="/products"
                 onClick={() => setMenuOpen(false)}
@@ -112,13 +110,13 @@ const Nav = () => {
               >
                 🛒 Your Cart
               </Link>
-              <Link
+              {/* <Link
                 href="/checkout"
                 onClick={() => setMenuOpen(false)}
                 className="text-white hover:text-blue-600 transition-colors duration-300"
               >
                 Chcekout
-              </Link>
+              </Link> */}
             </div>
           </div>
         </>

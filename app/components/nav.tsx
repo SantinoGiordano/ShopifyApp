@@ -2,126 +2,134 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
-import { Menu, X } from "lucide-react";
 
 const Nav = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="bg-white mx-auto p-7 w-[90%] max-w-4xl flex items-center justify-between md:justify-center ">
-      {/* Desktop Menu */}
-      <div className="hidden md:flex gap-6 items-center">
-        <Link
-          href="/"
-          className="text-gray-800  hover:text-blue-600 transition-colors duration-300"
-        >
-          Home
-        </Link>
-        <Link
-          href="/about"
-          className="text-gray-800 hover:text-blue-600 transition-colors duration-300"
-        >
-          About
-        </Link>
-        {/* <Link
-          href="/contact"
-          className="text-gray-800 hover:text-blue-600 transition-colors duration-300"
-        >
-          Contact
-        </Link> */}
-        <Link
-          href="/products"
-          className="text-gray-800 hover:text-blue-600 transition-colors duration-300"
-        >
-          Products
-        </Link>
-        <Link
-          href="/cart"
-          onClick={() => setMenuOpen(false)}
-          className="text-black hover:text-blue-600 transition-colors duration-300"
-        >
-          🛒 Your Cart
-        </Link>
-        {/* <Link
-          href="/checkout"
-          className="text-gray-800 hover:text-blue-600 transition-colors duration-300"
-        >
-          Chcekout
-        </Link> */}
-      </div>
+    <>
+      <nav className="bg-gray-800/20 backdrop-blur-md text-white px-4 py-4 md:px-8 md:py-4 flex justify-between items-center fixed top-0 left-0 w-full z-50 shadow-lg">
+        {/* Logo / Branding */}
+        <div className="flex items-center">
+          <span className="ml-2 text-lg md:text-2xl font-bold">My Store</span>
+        </div>
 
-      <div className="md:hidden ml-auto">
+        {/* Hamburger Icon */}
         <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="text-gray-800 focus:outline-none"
+          className="md:hidden ml-4 focus:outline-none"
+          onClick={() => setMobileOpen((prev) => !prev)}
+          aria-label="Toggle menu"
         >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+          <svg
+            className="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d={
+                mobileOpen
+                  ? "M6 18L18 6M6 6l12 12"
+                  : "M4 8h16M4 16h16"
+              }
+            />
+          </svg>
         </button>
-      </div>
 
-      {menuOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-black/99 z-40"
-            onClick={() => setMenuOpen(false)}
-          />
+        {/* Desktop Nav */}
+        <ul className="hidden md:flex space-x-4 md:space-x-8">
+          <li>
+            <Link
+              href="/"
+              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg drop-shadow"
+            >
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/about"
+              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg drop-shadow"
+            >
+              About
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/products"
+              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg drop-shadow"
+            >
+              Products
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/cart"
+              className="hover:text-gray-400 transition-colors font-medium text-base md:text-lg drop-shadow"
+            >
+              🛒 Your Cart
+            </Link>
+          </li>
+        </ul>
+      </nav>
 
-          <div className=" text-center fixed top-0 left-0 right-0 z-50 flex justify-center">
-            <div className=" p-8 flex flex-col gap-6 w-[80%] max-w-xs mt-6 rounded-xl shadow-lg relative">
-              <button
-                onClick={() => setMenuOpen(false)}
-                className="absolute top-4 right-4 text-white focus:outline-none"
-                aria-label="Close menu"
-              >
-                <X size={28} />
-              </button>
-              <Link
-                href="/"
-                onClick={() => setMenuOpen(false)}
-                className="text-white hover:text-blue-600 transition-colors duration-300"
-              >
-                Home
-              </Link>
-              <Link
-                href="/about"
-                onClick={() => setMenuOpen(false)}
-                className="text-white hover:text-blue-600 transition-colors duration-300"
-              >
-                About
-              </Link>
-              {/* <Link
-                href="/contact"
-                onClick={() => setMenuOpen(false)}
-                className="text-white hover:text-blue-600 transition-colors duration-300"
-              >
-                Contact
-              </Link> */}
-              <Link
-                href="/products"
-                onClick={() => setMenuOpen(false)}
-                className="text-white hover:text-blue-600 transition-colors duration-300"
-              >
-                Products
-              </Link>
-              <Link
-                href="/cart"
-                onClick={() => setMenuOpen(false)}
-                className="text-white hover:text-blue-600 transition-colors duration-300"
-              >
-                🛒 Your Cart
-              </Link>
-              {/* <Link
-                href="/checkout"
-                onClick={() => setMenuOpen(false)}
-                className="text-white hover:text-blue-600 transition-colors duration-300"
-              >
-                Chcekout
-              </Link> */}
-            </div>
-          </div>
-        </>
+      {/* Mobile Nav Overlay */}
+      {mobileOpen && (
+        <div className="text-white fixed inset-0 bg-black z-[9999] flex flex-col items-center pt-24 md:hidden transition-all">
+          <button
+            className="absolute top-6 right-6"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close menu"
+          >
+            <svg
+              className="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+
+          <Link
+            href="/"
+            className="block py-3 px-6 text-lg font-medium hover:text-gray-400 drop-shadow"
+            onClick={() => setMobileOpen(false)}
+          >
+            Home
+          </Link>
+          <Link
+            href="/about"
+            className="block py-3 px-6 text-lg font-medium hover:text-gray-400 drop-shadow"
+            onClick={() => setMobileOpen(false)}
+          >
+            About
+          </Link>
+          <Link
+            href="/products"
+            className="block py-3 px-6 text-lg font-medium hover:text-gray-400 drop-shadow"
+            onClick={() => setMobileOpen(false)}
+          >
+            Products
+          </Link>
+          <Link
+            href="/cart"
+            className="block py-3 px-6 text-lg font-medium hover:text-gray-400 drop-shadow"
+            onClick={() => setMobileOpen(false)}
+          >
+            🛒 Your Cart
+          </Link>
+        </div>
       )}
-    </nav>
+    </>
   );
 };
 

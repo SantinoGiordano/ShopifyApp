@@ -29,7 +29,7 @@ const Nav = () => {
           </svg>
         </button>
 
-        <ul className="hidden md:flex space-x-4 md:space-x-8">
+        <ul className="hidden md:flex space-x-4 p-2 md:space-x-8">
           <li>
             <Link
               href="/"

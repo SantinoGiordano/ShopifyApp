@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 
 type CartState = {
   cart: Product[];
+  cartLength: number;
   addToCart: (item: Product) => void;
   removeFromCart: (id: string) => void;
   isInCart: (id: string) => boolean;
@@ -17,18 +18,23 @@ export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       cart: [],
+      cartLength: 0,
+
       addToCart: (item) =>
         set((state) => {
           if (state.cart.find((i) => i._id === item._id)) return state; // prevent duplicate
-          return { cart: [...state.cart, item] };
+          const updatedCart = [...state.cart, item];
+          return { cart: updatedCart, cartLength: updatedCart.length };
         }),
+
       removeFromCart: (id) =>
-        set((state) => ({
-          cart: state.cart.filter((item) => item._id !== id),
-        })),
-      isInCart: (id) => {
-        return get().cart.some((item) => item._id === id);
-      },
+        set((state) => {
+          const updatedCart = state.cart.filter((item) => item._id !== id);
+          return { cart: updatedCart, cartLength: updatedCart.length };
+        }),
+
+      isInCart: (id) => get().cart.some((item) => item._id === id),
+
       toggleCartItem: (item) => {
         const { isInCart, addToCart, removeFromCart } = get();
         if (isInCart(item._id)) {
@@ -37,6 +43,7 @@ export const useCartStore = create<CartState>()(
           addToCart(item);
         }
       },
+
       totalPrice: 0,
       calculateTotalPrice: (products: Product[]) =>
         set((state) => {
@@ -46,10 +53,9 @@ export const useCartStore = create<CartState>()(
           }, 0);
           return { totalPrice: price };
         }),
-      clearCart: () => set({ cart: [] }),
+
+      clearCart: () => set({ cart: [], cartLength: 0 }),
     }),
-    {
-      name: "cart-storage", // key for localStorage
-    }
+    { name: "cart-storage" }
   )
 );

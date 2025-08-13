@@ -5,7 +5,6 @@ import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/types";
 
 export default function ProductsPage() {
-  const [langth, setLangth] = useState(0);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,9 +25,10 @@ export default function ProductsPage() {
   return (
     <>
       <div
-        className=" hidden md:block w-full min-h-[500px] items-center justify-center 
+        className="hidden md:block w-full min-h-[500px] items-center justify-center 
         bg-[url('/beachSunset.jpg')] bg-cover bg-center bg-no-repeat bg-fixed"
       ></div>
+
       <div className="min-h-screen bg-blue-400 md:bg-gradient-to-r md:from-blue-400 md:to-purple-400 flex flex-col items-center py-12">
         <h1 className="text-3xl font-bold mb-10 text-white">Our Products</h1>
 
@@ -69,17 +69,17 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const { isInCart, toggleCartItem } = useCartStore();
+  const { isInCart, toggleCartItem, cartLength } = useCartStore();
   const inCart = isInCart(id);
 
   const toggleAudio = () => {
     if (!audioRef.current) return;
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isPlaying ? audioRef.current.pause() : audioRef.current.play();
   };
 
   return (
     <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center transition-transform duration-300 hover:scale-105 hover:shadow-2xl border-t-4 border-blue-400">
+      {/* Audio Button */}
       <div className="w-24 h-24 bg-purple-400 md:bg-gradient-to-r md:from-blue-400 md:to-purple-400 rounded-full flex items-center justify-center mb-4 shadow-md relative">
         <button
           onClick={toggleAudio}
@@ -115,10 +115,12 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
         </button>
       </div>
 
+      {/* Product Info */}
       <h2 className="text-xl font-semibold mb-2 text-blue-700">{title}</h2>
       <p className="text-gray-600 text-center mb-4">{description}</p>
       <p className="text-gray-800 font-medium mb-4">${price.toFixed(2)}</p>
 
+      {/* Audio Element */}
       <audio
         ref={audioRef}
         src={file}
@@ -128,15 +130,9 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
       />
 
       <button
-        onClick={() =>
-          toggleCartItem({
-            _id: id,
-            name: title,
-            price,
-            file,
-            description,
-          })
-        }
+        onClick={() => {
+          toggleCartItem({ _id: id, name: title, price, file, description });
+        }}
         className={`p-3 mt-4 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg ${
           inCart
             ? "bg-red-500 hover:bg-red-600 text-white"
@@ -145,6 +141,13 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
       >
         {inCart ? "Remove from Cart" : "Add to Cart"}
       </button>
+
+      {/* Proceed to Checkout */}
+      {cartLength >= 1 && (
+        <p className="mt-2 text-blue-700 font-semibold cursor-pointer hover:underline">
+          Proceed to Checkout
+        </p>
+      )}
     </div>
   );
 };

@@ -9,7 +9,6 @@ export default function SuccessPage() {
   const [, setEmail] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
-  // Wait until Zustand store is hydrated
   useEffect(() => {
     setHydrated(true);
   }, []);
@@ -29,7 +28,6 @@ export default function SuccessPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: storedEmail, cart }),
       }).then(() => {
-        // Clear cart and email AFTER email send
         clearCart();
         localStorage.removeItem("checkoutEmail");
       });

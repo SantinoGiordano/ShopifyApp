@@ -22,7 +22,7 @@ export const useCartStore = create<CartState>()(
 
       addToCart: (item) =>
         set((state) => {
-          if (state.cart.find((i) => i._id === item._id)) return state; // prevent duplicate
+          if (state.cart.find((i) => i._id === item._id)) return state;
           const updatedCart = [...state.cart, item];
           return { cart: updatedCart, cartLength: updatedCart.length };
         }),

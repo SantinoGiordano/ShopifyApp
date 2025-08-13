@@ -115,12 +115,10 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
         </button>
       </div>
 
-      {/* Product Info */}
       <h2 className="text-xl font-semibold mb-2 text-blue-700">{title}</h2>
       <p className="text-gray-600 text-center mb-4">{description}</p>
       <p className="text-gray-800 font-medium mb-4">${price.toFixed(2)}</p>
 
-      {/* Audio Element */}
       <audio
         ref={audioRef}
         src={file}
@@ -142,7 +140,6 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
         {inCart ? "Remove from Cart" : "Add to Cart"}
       </button>
 
-      {/* Proceed to Checkout */}
       {cartLength >= 1 && (
         <p className="mt-2 text-blue-700 font-semibold cursor-pointer hover:underline">
           Proceed to Checkout

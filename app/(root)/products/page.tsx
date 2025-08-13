@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/types";
+import Link from "next/link";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -142,7 +143,7 @@ const AudioCard = ({ id, title, description, price, file }: AudioCardProps) => {
 
       {cartLength >= 1 && (
         <p className="mt-2 text-blue-700 font-semibold cursor-pointer hover:underline">
-          Proceed to Checkout
+          <Link href="/checkout">Proceed to Checkout</Link>
         </p>
       )}
     </div>

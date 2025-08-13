@@ -37,7 +37,7 @@ export default function CartPage() {
               ))}
             </div>
 
-            <div className="mt-6 flex justify-between items-center text-lg font-semibold">
+            <div className="mt-6 text-black flex justify-between items-center text-lg font-semibold">
               <span>Total:</span>
               <span>${total.toFixed(2)}</span>
             </div>
